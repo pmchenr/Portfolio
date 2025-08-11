@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base editorial feel */
+@layer base {
+  :root { color-scheme: light; }
+
+  html, body { background: #fff; }
+
+  body {
+    @apply font-sans text-ink antialiased;
+  }s
+
+  /* Headings: serif, strong but not shouty */
+  h1, h2, h3, .h1, .h2, .h3 {
+    @apply font-serif tracking-tight text-ink;
+  }
+  h1, .h1 { @apply text-4xl md:text-5xl font-semibold; }
+  h2, .h2 { @apply text-2xl md:text-3xl font-semibold; }
+  h3, .h3 { @apply text-xl md:text-2xl font-semibold; }
+
+  /* Hairline separators */
+  .hr, hr { @apply border-0 border-t border-line my-8; }
+
+  /* Links */
+  a { @apply underline-offset-2 decoration-transparent; }
+  a:hover { @apply underline; }
+}
+
+@layer components {
+  /* Narrower, magazine-like column */
+  .container { @apply max-w-5xl mx-auto; }
+
+  /* Inputs / buttons */
+  .input {
+    @apply w-full border border-line rounded-xl px-3 py-2 bg-white shadow-sm
+           focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black/20;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 border border-line
+           hover:border-black/30 hover:bg-black/5 transition;
+  }
+  .btn-primary { @apply bg-ink text-white border-ink hover:bg-black; }
+  .badge { @apply text-xs px-2 py-1 rounded-full border border-line text-ash; }
+
+  /* Card */
+  .card { @apply bg-paper border border-line rounded-xl shadow-card; }
+}
