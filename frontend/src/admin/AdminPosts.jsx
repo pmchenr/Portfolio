@@ -12,6 +12,7 @@ export default function AdminPosts() {
   const [loading, setLoading] = useState(true);
   const [dests, setDests] = useState([]);   // must start as []
   const [posts, setPosts] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   // form state
   const [title, setTitle] = useState('');
@@ -67,6 +68,26 @@ export default function AdminPosts() {
   const addItineraryItem = () => {
     setItineraryItems(prev => [...prev, { day: prev.length + 1, text: '' }]);
   };
+
+  async function handleImageUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError('');
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      const { data } = await axios.post(`${API_BASE}/api/uploads`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setCoverImage(data.url); // Cloudinary URL from backend
+    } catch (err) {
+      console.error(err);
+      setError(err?.response?.data?.message || 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const updateItineraryItem = (idx, value) => {
     setItineraryItems(prev => {
@@ -216,14 +237,32 @@ export default function AdminPosts() {
           </div>
 
           <div className="md:col-span-2">
-            <label className="block mb-1">Cover Image URL</label>
-            <input
-              className="w-full border rounded p-2"
-              value={coverImage}
-              onChange={e => setCoverImage(e.target.value)}
-              placeholder="https://res.cloudinary.com/.../cover.jpg"
-            />
+            <label className="block mb-1">Cover Image</label>
+            <div className="flex flex-col gap-3">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={uploading}
+                className="w-full border rounded p-2"
+              />
+              <input
+                className="w-full border rounded p-2"
+                value={coverImage}
+                onChange={e => setCoverImage(e.target.value)}
+                placeholder="https://res.cloudinary.com/.../cover.jpg"
+              />
+              {uploading && <span className="text-sm text-gray-600">Uploading…</span>}
+              {coverImage && (
+                <img
+                  src={coverImage}
+                  alt="preview"
+                  className="mt-1 h-32 w-auto object-cover rounded border"
+                />
+              )}
+            </div>
           </div>
+
         </div>
 
         <div className="mt-6">

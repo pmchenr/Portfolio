@@ -7,18 +7,17 @@ export default function Navbar() {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-line">
+    <header className="sticky top-0 z-50 bg-transparent backdrop-blur border-b border-line">
       <div className="container flex items-center justify-between py-3">
         <NavLink to="/" className="font-serif text-2xl tracking-tight">
           Travel Notes
         </NavLink>
-        <nav className="flex items-center gap-6 text-sm text-ash">
-          <NavLink to="/destinations" className={linkClass}>Destinations</NavLink>
+        <nav className="flex items-center gap-6 text-sm text-white">
+          <NavLink to="/past-trips" className={linkClass}>Past Trips</NavLink>
+          <NavLink to="/future-trips" className={linkClass}>Future Trips</NavLink>
           <NavLink to="/gallery" className={linkClass}>Gallery</NavLink>
           <NavLink to="/about" className={linkClass}>About</NavLink>
-          <NavLink to="/contact" className={linkClass}>Contact</NavLink>
-          <NavLink to="/stories" className={linkClass}>Stories</NavLink>
-          <NavLink to="/admin/login" className={linkClass}>Admin</NavLink>
+          <NavLink to="/admin/login" className={linkClass}>Login</NavLink>
         </nav>
       </div>
     </header>
