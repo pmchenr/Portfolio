@@ -9,41 +9,88 @@
   html, body { background: #fff; }
 
   body {
-    @apply font-sans text-ink antialiased;
-  }s
+    @apply font-sans text-ink antialiased leading-relaxed;
+  }
 
-  /* Headings: serif, strong but not shouty */
+  /* Headings: large, strong, serif */
   h1, h2, h3, .h1, .h2, .h3 {
     @apply font-serif tracking-tight text-ink;
   }
-  h1, .h1 { @apply text-4xl md:text-5xl font-semibold; }
-  h2, .h2 { @apply text-2xl md:text-3xl font-semibold; }
-  h3, .h3 { @apply text-xl md:text-2xl font-semibold; }
+  h1, .h1 { @apply text-4xl md:text-5xl font-semibold mb-4; }
+  h2, .h2 { @apply text-2xl md:text-3xl font-semibold mb-3; }
+  h3, .h3 { @apply text-xl md:text-2xl font-semibold mb-2; }
 
-  /* Hairline separators */
-  .hr, hr { @apply border-0 border-t border-line my-8; }
+  /* Paragraphs + text rhythm */
+  p {
+    @apply mb-5 text-lg text-ash;
+  }
 
   /* Links */
-  a { @apply underline-offset-2 decoration-transparent; }
-  a:hover { @apply underline; }
+  a {
+    @apply underline-offset-4 decoration-transparent transition-colors;
+  }
+  a:hover {
+    @apply underline;
+  }
 }
 
 @layer components {
-  /* Narrower, magazine-like column */
+  /* Layout */
   .container { @apply max-w-5xl mx-auto; }
+  .section   { @apply container px-4 md:px-0 py-8 md:py-12; }
+  .hr, hr    { @apply border-0 border-t border-line my-10; }
 
-  /* Inputs / buttons */
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2
+           border border-line bg-white text-ink shadow-sm
+           hover:border-black/30 hover:bg-black/5 active:translate-y-[1px]
+           transition;
+  }
+  .btn-primary {
+    @apply bg-ink text-white border-ink hover:bg-black;
+  }
+  .btn-ghost {
+    @apply bg-transparent border-transparent hover:bg-black/5;
+  }
+  .btn-sm { @apply text-sm px-3 py-1.5 rounded-lg; }
+
+  /* Inputs */
   .input {
     @apply w-full border border-line rounded-xl px-3 py-2 bg-white shadow-sm
+           placeholder:text-ash/70
            focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black/20;
   }
-  .btn {
-    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 border border-line
-           hover:border-black/30 hover:bg-black/5 transition;
-  }
-  .btn-primary { @apply bg-ink text-white border-ink hover:bg-black; }
-  .badge { @apply text-xs px-2 py-1 rounded-full border border-line text-ash; }
+  .textarea { @apply input min-h-[120px]; }
+  .select   { @apply input pr-8; }
 
-  /* Card */
-  .card { @apply bg-paper border border-line rounded-xl shadow-card; }
+  /* Badges & tags */
+  .badge { @apply text-xs px-2 py-1 rounded-full border border-line text-ash bg-white; }
+
+  /* Cards */
+  .card {
+    @apply bg-paper border border-line rounded-xl shadow-card;
+  }
+  .card-hover { @apply hover:shadow-lg transition-shadow; }
+}
+
+
+@layer utilities {
+  /* Color tokens */
+  .text-ink { color: #0b0b0b; }                  /* near-black */
+  .text-ash { color: #6b7280; }                  /* gray-500 */
+  .bg-paper { background-color: #ffffff; }       /* white */
+  .bg-sand { background-color: #f6f3ee; }        /* warm off-white */
+  .border-line { border-color: #e5e7eb; }        /* gray-200 */
+
+  /* Shape + shadow */
+  .rounded-brand { border-radius: 18px; }
+  .shadow-card { box-shadow:
+      0 1px 0 rgba(0,0,0,.05),
+      0 8px 24px rgba(0,0,0,.06);
+  }
+
+  /* Typography stacks to match your Google fonts */
+  .font-serif { font-family: "Source Serif 4", ui-serif, Georgia, serif; }
+  .font-sans  { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
 }

@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
-
-const API =
-  import.meta.env.VITE_API_URL ||
-  import.meta.env.VITE_API_BASE_URL ||
-  'http://localhost:5000';
+import API from '../api'; // use the shared axios instance
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('admin');
@@ -15,7 +10,8 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post(`${API}/api/auth/login`, { username, password });
+      // baseURL in src/api.js already ends with /api
+      const res = await API.post('/auth/login', { username, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       window.location.href = '/admin';
