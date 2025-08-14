@@ -20,16 +20,10 @@ export default function Hero() {
                             <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
                                 <div className="flex flex-col sm:flex-row justify-center gap-6 w-full max-w-5xl animate-fadeUp">
                                     <Link
-                                        to="/past-trips"
+                                        to="/trips"
                                         className="flex-1 flex items-center justify-center px-6 py-5 border border-white text-white text-2xl sm:text-3xl font-semibold rounded-lg hover:bg-white/10 transition"
                                     >
-                                        Past Trips
-                                    </Link>
-                                    <Link
-                                        to="/future-trips"
-                                        className="flex-1 flex items-center justify-center px-6 py-5 border border-white text-white text-2xl sm:text-3xl font-semibold rounded-lg hover:bg-white/10 transition"
-                                    >
-                                        Future Trips
+                                        Trips
                                     </Link>
                                     <Link
                                         to="/gallery"

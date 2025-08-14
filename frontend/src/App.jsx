@@ -11,6 +11,8 @@ import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminPosts from './admin/AdminPosts';
 import Stories from './pages/Stories';
+import Trips from './pages/Trips';
+
 
 function ProtectedRoute({ children }) {
     const token = localStorage.getItem('token');
@@ -53,6 +55,7 @@ export default function App() {
                     <Route path="/admin/posts" element={<AdminPosts />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                     <Route path="/stories" element={<Stories />} />
+                    <Route path="/trips" element={<Trips />} />                       
                 </Routes>
             </main>
         </div>

@@ -20,7 +20,9 @@ export default function Navbar() {
             <div className="container flex items-center justify-between py-3">
                 <Link
                     to="/"
-                    className="font-serif text-2xl tracking-tight text-white"
+                    className={`font-serif text-2xl tracking-tight ${
+                        isHome ? 'text-white' : 'text-ink'
+                    }`}
                 >
                     Travel Notes
                 </Link>
@@ -32,11 +34,8 @@ export default function Navbar() {
                         </Link>
                     ) : (
                         <>
-                            <NavLink to="/past-trips" className={linkClass}>
-                                Past Trips
-                            </NavLink>
-                            <NavLink to="/future-trips" className={linkClass}>
-                                Future Trips
+                            <NavLink to="/trips" className={linkClass}>
+                                Trips
                             </NavLink>
                             <NavLink to="/gallery" className={linkClass}>
                                 Gallery
