@@ -3,9 +3,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const User = require('./models/User');
-const Destination = require('./models/Destination');
-const Post = require('./models/Post');
+const User = require('../models/User');
+const Destination = require('../models/Destination');
+const Post = require('../models/Post');
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';

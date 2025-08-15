@@ -1,31 +1,39 @@
-# Node modules
+# === Node.js ===
+node_modules/
 backend/node_modules/
 frontend/node_modules/
 
-# Env files (do not commit secrets!)
-backend/.env
-backend/.env.*
+# === Environment files ===
+# Never commit real env vars
+*.env
+*.env.*
 !backend/.env.example
-frontend/.env
-frontend/.env.*
 !frontend/.env.example
 
-# Build outputs
+# === Build outputs ===
 frontend/dist/
 backend/uploads/
+backend/coverage/
+frontend/coverage/
 
-# Logs
+# === Logs ===
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# MacOS system files
+# === OS & Editor ===
 .DS_Store
-
-# Local editor settings
+Thumbs.db
 .vscode/
 .idea/
 
-# Optional: if you use nvm
+# === Temporary files ===
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# === Optional version managers ===
 .nvmrc
