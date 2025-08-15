@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Stories from './pages/Stories';
 import Trips from './pages/Trips';
 import Navbar from './components/Navbar';
+import TripPage from "./pages/TripPage";
 
 import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
@@ -64,6 +65,7 @@ export default function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                     <Route path="/stories" element={<Stories />} />
                     <Route path="/trips" element={<Trips />} />
+                    <Route path="/trips/:slug" element={<TripPage />} />
                 </Routes>
             </main>
         </div>
