@@ -5,14 +5,14 @@ import DestinationPage from './pages/DestinationPage';
 import Gallery from './pages/Gallery';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Stories from './pages/Stories';
+import Trips from './pages/Trips';
 import Navbar from './components/Navbar';
 
 import AdminLogin from './admin/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
 import AdminPosts from './admin/AdminPosts';
-import Stories from './pages/Stories';
-import Trips from './pages/Trips';
-
+import AdminTrips from './admin/AdminTrips';
 
 function ProtectedRoute({ children }) {
     const token = localStorage.getItem('token');
@@ -53,9 +53,17 @@ export default function App() {
                         }
                     />
                     <Route path="/admin/posts" element={<AdminPosts />} />
+                    <Route
+                        path="/admin/trips"
+                        element={
+                            <ProtectedRoute>
+                                <AdminTrips />
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route path="*" element={<Navigate to="/" replace />} />
                     <Route path="/stories" element={<Stories />} />
-                    <Route path="/trips" element={<Trips />} />                       
+                    <Route path="/trips" element={<Trips />} />
                 </Routes>
             </main>
         </div>

@@ -7,6 +7,8 @@ const authRoutes = require('./routes/auth');
 const postsRoutes = require('./routes/posts');
 const destRoutes = require('./routes/destinations');
 const uploadsRoutes = require('./routes/uploads');
+const tripsRoutes = require('./routes/trips');
+
 
 const app = express();
 app.use(cors());
@@ -26,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/destinations', destRoutes);
 app.use('/api/uploads', uploadsRoutes);
+app.use('/api/trips', tripsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
