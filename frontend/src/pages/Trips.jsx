@@ -34,7 +34,7 @@ export default function Trips() {
   }
 
   return (
-    <div className="container px-4 md:px-0 pt-20 md:pt-24">
+    <div className="container px-4 md:px-0">
       <section className="my-10">
         <h1 className="font-serif text-4xl md:text-5xl">Trips</h1>
         <p className="text-ash mt-2">All adventures in one place.</p>

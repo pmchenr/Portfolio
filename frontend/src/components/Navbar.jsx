@@ -1,6 +1,7 @@
 import { NavLink, Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
+    console.log("USING Navbar.jsx");
     const { pathname } = useLocation();
     const isHome = pathname === '/';
 

@@ -1,27 +1,21 @@
+// src/pages/TripPage.jsx
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-const Tabs = ({ children }) => <div>{children}</div>;
-const TabsList = ({ children }) => <div>{children}</div>;
-const TabsTrigger = ({ children, onClick }) => <button onClick={onClick}>{children}</button>;
-const TabsContent = ({ children }) => <div>{children}</div>;
-
-const Card = ({ children }) => <div className="border p-4 rounded">{children}</div>;
-const CardContent = ({ children }) => <div>{children}</div>;
-const Button = ({ children, ...props }) => <button {...props}>{children}</button>;
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
 
-// Single-file scaffold for an individual Trip page with 3 tabs
-// Route suggestion: <Route path="/trips/:slug" element={<TripPage />} />
 export default function TripPage() {
   const { slug } = useParams();
   const tripName = formatTripName(slug);
 
-  // TODO: Replace with real auth/subscription state
+  // TODO: wire to real auth/subscription
   const [isMember] = useState(false);
 
   return (
-    <div className="mx-auto max-w-5xl p-6 space-y-6">
-      <header className="flex items-center justify-between">
+    <div className="mx-auto max-w-5xl space-y-6">
+      <header className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold capitalize">{tripName}</h1>
           <p className="text-sm opacity-70">/trips/{slug}</p>
@@ -56,11 +50,11 @@ export default function TripPage() {
                 </p>
               </CardContent>
             </Card>
+
             <Card className="rounded-2xl">
               <CardContent className="p-6 space-y-4">
                 <h2 className="text-xl font-semibold">Gallery</h2>
                 <div className="grid grid-cols-3 gap-2">
-                  {/* Replace placeholders with real images */}
                   {Array.from({ length: 6 }).map((_, i) => (
                     <div key={i} className="aspect-video rounded-xl bg-muted" />
                   ))}
@@ -84,6 +78,7 @@ export default function TripPage() {
                   </ol>
                 </CardContent>
               </Card>
+
               <Card className="rounded-2xl">
                 <CardContent className="p-6 space-y-4">
                   <h2 className="text-xl font-semibold">Booking</h2>
@@ -105,7 +100,11 @@ export default function TripPage() {
                 <form className="space-y-4 max-w-xl">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Your question</label>
-                    <textarea className="w-full rounded-xl border p-3" rows={5} placeholder="What's on your mind?" />
+                    <textarea
+                      className="w-full rounded-xl border p-3"
+                      rows={5}
+                      placeholder="What's on your mind?"
+                    />
                   </div>
                   <Button type="button">Submit</Button>
                 </form>
@@ -122,9 +121,7 @@ export default function TripPage() {
 
 function formatTripName(slug) {
   if (!slug) return "Trip";
-  return slug
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function LockedPanel({ label }) {
