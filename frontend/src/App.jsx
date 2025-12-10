@@ -110,7 +110,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/admin/posts" element={<AdminPosts />} />
+        <Route
+          path="/admin/posts"
+          element={
+            <ProtectedRoute>
+              <AdminPosts />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin/trips"
           element={

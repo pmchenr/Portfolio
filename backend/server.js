@@ -8,6 +8,8 @@ const postsRoutes = require('./routes/posts');
 const destRoutes = require('./routes/destinations');
 const uploadsRoutes = require('./routes/uploads');
 const tripsRoutes = require('./routes/trips');
+const settingsRoutes = require('./routes/settings');
+const questionsRoutes = require('./routes/questions');
 
 
 const app = express();
@@ -29,6 +31,8 @@ app.use('/api/posts', postsRoutes);
 app.use('/api/destinations', destRoutes);
 app.use('/api/uploads', uploadsRoutes);
 app.use('/api/trips', tripsRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/questions', questionsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
