@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Hero from '../components/Hero';
+import Navbar from '../components/Navbar';
 
 export default function Home() {
     useEffect(() => {
@@ -10,5 +11,10 @@ export default function Home() {
         };
     }, []);
 
-    return <Hero />; // no posts below
+    return (
+        <>
+            <Navbar />
+            <Hero />
+        </>
+    );
 }

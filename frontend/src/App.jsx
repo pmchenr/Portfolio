@@ -8,6 +8,8 @@ import Contact from "./pages/Contact";
 import Stories from "./pages/Stories";
 import Trips from "./pages/Trips";
 import TripPage from "./pages/TripPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
@@ -15,6 +17,7 @@ import AdminPosts from "./admin/AdminPosts";
 import AdminTrips from "./admin/AdminTrips";
 
 import MainLayout from "./components/layout/MainLayout";
+import { ViewModeProvider } from "./context/ViewModeContext";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -23,9 +26,12 @@ function ProtectedRoute({ children }) {
 
 export default function App() {
   return (
+    <ViewModeProvider>
     <div className="min-h-screen flex flex-col">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/destinations"
@@ -131,5 +137,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
+    </ViewModeProvider>
   );
 }

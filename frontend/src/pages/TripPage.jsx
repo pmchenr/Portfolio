@@ -4,10 +4,20 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Lock, Pencil, Save, X, Eye, EyeOff } from "lucide-react";
+import { Lock, Pencil, Save, X, Eye, EyeOff, Maximize2, Minimize2 } from "lucide-react";
 import API from "../api";
 import ImageUpload from "../components/ImageUpload";
 import ImageLightbox from "../components/ImageLightbox";
+import { useViewMode } from "../context/ViewModeContext";
+
+// Background video URLs mapped by trip slug
+const TRIP_VIDEOS = {
+  "iceland-the-trail-of-fire-and-ice": "https://res.cloudinary.com/dhtv5scfv/video/upload/v1765351293/IMG_3727_p9f1wh.mov",
+  "salzburg-summer": "https://res.cloudinary.com/dhtv5scfv/video/upload/v1765351126/IMG_2070_iavvbw.mov",
+  "serengeti-safari": "https://res.cloudinary.com/dhtv5scfv/video/upload/v1765351122/IMG_1569_duurbe.mov",
+  "chamonix-ski": "https://res.cloudinary.com/dhtv5scfv/video/upload/v1765351375/IMG_2425_smcqqj.mov",
+  "wales-camper-van": "https://res.cloudinary.com/dhtv5scfv/video/upload/v1765351404/IMG_9160_yjsptv.mov",
+};
 
 export default function TripPage() {
   const { slug } = useParams();
@@ -19,9 +29,24 @@ export default function TripPage() {
   const [editData, setEditData] = useState({});
   const [saving, setSaving] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [hideContent, setHideContent] = useState(false);
 
-  // Check if user is admin (has token)
-  const isAdmin = !!localStorage.getItem("token");
+  // Get view mode from context
+  const { isAdmin, isSubscriber, actualIsAdmin } = useViewMode();
+
+  const hasVideo = TRIP_VIDEOS[slug];
+
+  // Make body transparent when video background is active
+  useEffect(() => {
+    if (hasVideo) {
+      document.body.style.background = 'transparent';
+      document.documentElement.style.background = 'transparent';
+      return () => {
+        document.body.style.background = '';
+        document.documentElement.style.background = '';
+      };
+    }
+  }, [hasVideo]);
 
   useEffect(() => {
     const fetchTrip = async () => {
@@ -93,8 +118,39 @@ export default function TripPage() {
     );
   }
 
+  const videoUrl = TRIP_VIDEOS[slug];
+
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
+    <div className="relative min-h-screen">
+      {/* Full Page Video Background */}
+      {videoUrl && (
+        <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -1 }}>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={videoUrl} type="video/quicktime" />
+            <source src={videoUrl.replace('.mov', '.mp4')} type="video/mp4" />
+          </video>
+          <div className={`absolute inset-0 transition-opacity duration-500 ${hideContent ? 'bg-black/20' : 'bg-black/50'}`} />
+        </div>
+      )}
+
+      {/* Toggle content visibility button */}
+      {videoUrl && (
+        <button
+          onClick={() => setHideContent(!hideContent)}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+          title={hideContent ? "Show content" : "Hide content to view video"}
+        >
+          {hideContent ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+        </button>
+      )}
+
+      <div className={`mx-auto max-w-5xl space-y-6 p-6 relative transition-opacity duration-500 ${videoUrl ? 'text-white bg-transparent' : ''} ${hideContent ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
       {/* Draft indicator */}
       {isAdmin && !trip.published && (
         <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 rounded-lg flex items-center justify-between">
@@ -141,12 +197,12 @@ export default function TripPage() {
                 />
               </div>
             </div>
-          ) : (
+          ) : !videoUrl ? (
             <>
               <h1 className="text-3xl font-bold">{trip.title}</h1>
               <p className="text-sm opacity-70">{trip.location} {trip.dates && `• ${trip.dates}`}</p>
             </>
-          )}
+          ) : null}
         </div>
         <div className="flex gap-2 flex-wrap justify-end">
           <Link to="/trips">
@@ -174,10 +230,12 @@ export default function TripPage() {
               </Button>
             </>
           )}
-          {!isAdmin && (
-            <Button>
-              <Lock className="mr-2 h-4 w-4" /> Become a member
-            </Button>
+          {!isSubscriber && (
+            <Link to="/pricing">
+              <Button>
+                <Lock className="mr-2 h-4 w-4" /> Become a member
+              </Button>
+            </Link>
           )}
         </div>
       </header>
@@ -253,11 +311,16 @@ export default function TripPage() {
 
         {/* TAB 2: Members-only itinerary & booking */}
         <TabsContent value="itinerary" className="mt-6">
-          {isAdmin ? (
+          {isSubscriber ? (
             <div className="space-y-6">
               {isAdmin && !editing && (
                 <p className="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg">
-                  You're viewing as admin. Regular users see this as locked.
+                  You're viewing as admin. Non-subscribers see this as locked.
+                </p>
+              )}
+              {!isAdmin && isSubscriber && (
+                <p className="text-sm text-green-600 bg-green-50 p-2 rounded-lg">
+                  You have subscriber access to this content.
                 </p>
               )}
               <Card className="rounded-2xl">
@@ -272,7 +335,7 @@ export default function TripPage() {
                     />
                   ) : (
                     <div className="whitespace-pre-wrap leading-relaxed">
-                      {trip.itinerary || "No itinerary added yet. Click Edit to add one."}
+                      {trip.itinerary || (isAdmin ? "No itinerary added yet. Click Edit to add one." : "Itinerary coming soon.")}
                     </div>
                   )}
                 </CardContent>
@@ -290,7 +353,7 @@ export default function TripPage() {
                     />
                   ) : (
                     <div className="whitespace-pre-wrap leading-relaxed">
-                      {trip.bookingInfo || "No booking info added yet. Click Edit to add."}
+                      {trip.bookingInfo || (isAdmin ? "No booking info added yet. Click Edit to add." : "Booking info coming soon.")}
                     </div>
                   )}
                 </CardContent>
@@ -303,13 +366,14 @@ export default function TripPage() {
 
         {/* TAB 3: Members-only Q&A */}
         <TabsContent value="questions" className="mt-6">
-          {isAdmin ? (
+          {isSubscriber ? (
             <QASection tripId={trip._id} isAdmin={isAdmin} />
           ) : (
             <LockedPanel label="Members-only Q&A" />
           )}
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }
